@@ -2,13 +2,13 @@ const express = require('express');
 const path = require('path');
 
 const { 
-  servePlayLists,
-  createPlayList,
-  editPlayListName,
-  servePlayList,
-  deletePlaylist,
-  deleteAllPlaylists
-} = require('./controllers/playlistController');
+  serveSongs,
+  createSong,
+  editSong,
+  serveSong,
+  deleteSong,
+  deleteAllSongs
+} = require('./controllers/songController');
 
 const app = express();
 
@@ -28,15 +28,17 @@ app.use(logRoutes);
 app.use(serveStatic);
 app.use(parseJSON);
 
-// endpoint and method dictate the controller function to be called
-app.get('/api/playlists', servePlayLists);
-app.get('/api/playlists/:id', servePlayList);
-app.post('/api/playlists', createPlayList);
-app.patch('/api/playlists/:id', editPlayListName);
-app.delete('api/playlists/:id', deletePlaylist);
-app.delete('api/playlists/', deleteAllPlaylists)
+// Endpoint and method dictate the controller function to be called
+app.get('/api/songs', serveSongs);
+app.get('/api/songs/:id', serveSong);
+app.post('/api/songs', createSong);
+app.patch('/api/songs/:id', editSong);
+app.delete('/api/songs/:id', deleteSong);
+app.delete('/api/songs', deleteAllSongs);
 
-
+app.get('*', (req, res) => {
+  res.status(404).send({ msg: '404 Not Found' });
+});
 
 app.listen(PORT, () => {
   console.log(`Server is listening on http://localhost:${PORT}`);
